@@ -1,5 +1,5 @@
-import type { Client } from "./Client";
-import type { InvoiceItem } from "./InvoiceItem";
+import type { Client } from "./client";
+import type { InvoiceItem } from "./invoiceItem";
 
 export type Invoice = {
   id?: number;
