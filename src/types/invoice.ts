@@ -1,21 +1,29 @@
-import type { Client } from "./client";
-import type { InvoiceItem } from "./invoiceItem";
+import type { ClientRequest, ClientResponse } from "./client";
+import type { InvoiceItemRequest, InvoiceItemResponse } from "./invoiceItem";
 
-export type Invoice = {
-  id?: number;
+export interface InvoiceRequest {
   invoiceNumber: string;
   issueDate: string;
   dueDate: string;
-  totalNet?: number;
-  totalVat?: number;
-  totalGross?: number;
-  client: Client;
-  items: InvoiceItem[];
-  createdAt?: string;
-};
+  client: ClientRequest;
+  items: InvoiceItemRequest[];
+}
+
+export interface InvoiceResponse {
+  id: number;
+  invoiceNumber: string;
+  issueDate: string;
+  dueDate: string;
+  client: ClientResponse;
+  items: InvoiceItemResponse[];
+  totalNet: number;
+  totalVat: number;
+  totalGross: number;
+  createdAt: string;
+}
 
 export interface PaginatedInvoices {
-    content: Invoice[];
+    content: InvoiceResponse[];
     totalElements: number;
     totalPages: number;
     number: number;
