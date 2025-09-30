@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import type { InvoiceResponse} from "../types/invoice"
-import { getInvoiceByPublicToken } from "../services/invoiceService"
+import type { InvoiceResponse } from "../types/invoice";
+import { getInvoiceByPublicToken } from "../features/invoices/services";
 
 export const useInvoiceByPublicToken = (publicToken?: string) => {
     return useQuery<InvoiceResponse, Error>({

@@ -1,5 +1,5 @@
-import type { ClientRequest, PaginatedClientsResponse } from "../types/client";
-import api from "./api";
+import api from "../../../services/api";
+import type { ClientRequest, PaginatedClientsResponse } from "../../../types/client";
 
 export const getClients = async (page: number = 0, size?: number): Promise<PaginatedClientsResponse> => {
     const params: Record<string, string> = { page: page.toString() };

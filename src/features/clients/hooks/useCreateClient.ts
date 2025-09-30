@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { ClientRequest } from "../types/client";
+import type { ClientRequest } from "../../../types/client";
 import { createClient } from "../services/clientService";
 
 export const useCreateClient = () => {

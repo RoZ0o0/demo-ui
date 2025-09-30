@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import type { InvoiceResponse } from "../../types/invoice";
+import type { InvoiceResponse } from "../../../types/invoice";
 
 const InvoiceRow = ({ invoice }: { invoice: InvoiceResponse }) => {
     const navigate = useNavigate();
@@ -11,6 +11,7 @@ const InvoiceRow = ({ invoice }: { invoice: InvoiceResponse }) => {
             <td>{invoice.totalGross?.toFixed(2)}</td>
             <td>
                 <button onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>Preview</button>
+                <button></button>
             </td>
         </tr>
     )

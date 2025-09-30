@@ -1,4 +1,4 @@
-import type { ClientResponse } from "../../types/client";
+import type { ClientResponse } from "../../../types/client";
 import ClientRow from "./ClientRow";
 
 const ClientTable = ({ clients } : { clients : ClientResponse[] }) => {

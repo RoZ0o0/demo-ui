@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { InvoiceRequest } from "../types/invoice";
-import { createInvoice } from "../services/invoiceService";
+import { createInvoice } from "../services";
+import type { InvoiceRequest } from "../../../types/invoice";
 
 export const useCreateInvoice = () => {
     const queryClient = useQueryClient();

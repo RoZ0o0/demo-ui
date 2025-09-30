@@ -1,4 +1,4 @@
-import type { InvoiceResponse } from "../../types/invoice";
+import type { InvoiceResponse } from "../../../types/invoice";
 import InvoiceRow from "./InvoiceRow";
 
 const InvoiceTable = ({ invoices } : { invoices : InvoiceResponse[] }) => {

@@ -1,13 +1,13 @@
 import { Button, Switch, TextField, Typography} from "@mui/material";
-import BaseDialog from "../../components/BaseDialog";
 import Stack from '@mui/material/Stack';
 import { useReducer, useState, type FormEvent } from "react";
+import { initialInvoiceClient, initialInvoiceState, invoiceReducer } from "../reducers";
+import { useCreateInvoice } from "../hooks";
+import { useCheckClientNipExists } from "../../../hooks/useCheckClientNipExists";
+import { invoiceRequestSchema } from "../../../schemas/invoiceRequestSchema";
+import BaseDialog from "../../../components/BaseDialog";
 import InvoiceItemAddDialog from "./InvoiceItemAddDialog";
-import { ClientAutocomplete } from "../clients";
-import { initialInvoiceClient, initialInvoiceState, invoiceReducer } from "./invoiceReducer";
-import { useCreateInvoice } from "../../hooks/useCreateInvoice";
-import { useCheckClientNipExists } from "../../hooks/useCheckClientNipExists";
-import { invoiceRequestSchema } from "../../schemas/invoiceRequestSchema";
+import InvoiceClientAutocomplete from "./InvoiceClientAutocomplete";
 
 interface InvoiceCreateDialogProps {
   isOpen: boolean;
@@ -180,7 +180,7 @@ const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
                     </Stack>
                     { !isCreatingNewClient ? (
                         <>
-                            <ClientAutocomplete 
+                            <InvoiceClientAutocomplete 
                                 value={state.data.client}
                                 onChange={(client) => dispatch({ type:"SET_CLIENT", payload: { client } })}
                                 style={{

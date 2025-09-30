@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { InvoiceCreateDialog, InvoiceList } from "../features/invoices";
 import { IconButton, Tooltip } from "@mui/material";
+import { InvoiceCreateDialog, InvoiceList } from "../features/invoices/components";
 
 const Invoices = () => {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -26,7 +26,7 @@ const Invoices = () => {
                 </div>
             </div>
 
-            <div className="bg-white px-8 rounded-lg shadow-lg w-full h-full">
+            <div className="flex justify-center max-w-[800px] bg-white px-8 rounded-lg shadow-lg w-full h-full">
                 <InvoiceList />
             </div>
 

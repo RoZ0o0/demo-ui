@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { TextField, Button, Stack } from "@mui/material";
-import BaseDialog from "../../components/BaseDialog";
-import type { InvoiceItemRequest, InvoiceItemWithKey } from "../../types/invoiceItem";
-import { invoiceItemRequestSchema } from "../../schemas/invoiceItemRequestSchema";
+import type { InvoiceItemRequest, InvoiceItemWithKey } from "../../../types/invoiceItem";
+import { invoiceItemRequestSchema } from "../../../schemas/invoiceItemRequestSchema";
+import BaseDialog from "../../../components/BaseDialog";
 
 interface InvoiceItemDialogProps {
   isOpen: boolean;

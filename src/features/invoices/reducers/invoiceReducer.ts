@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { ClientRequest } from "../../types/client";
-import type { InvoiceItemRequest, InvoiceItemWithKey } from "../../types/invoiceItem";
+import type { ClientRequest } from '../../../types/client';
+import type { InvoiceItemRequest, InvoiceItemWithKey } from '../../../types/invoiceItem';
 
 type InvoiceData = {
   invoiceNumber: string;

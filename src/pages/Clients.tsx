@@ -1,7 +1,6 @@
 import { useState } from "react";
-import ClientList from "../features/clients/ClientList";
 import { IconButton, Tooltip } from "@mui/material";
-import ClientFormDialog from "../features/clients/ClientFormDialog";
+import { ClientFormDialog, ClientList } from "../features/clients/components";
 
 const Clients = () => {
         const [isClientFormOpen, setIsClientFormOpen] = useState(false);

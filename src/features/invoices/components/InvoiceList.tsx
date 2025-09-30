@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useInvoices } from "../../hooks/useInvoices";
-import InvoiceTable from "./InvoiceTable";
 import { CircularProgress, Pagination } from "@mui/material";
+import { useInvoices } from "../hooks";
+import InvoiceTable from "./InvoiceTable";
 
 const InvoiceList = () => {
   const [page, setPage] = useState(0);
@@ -9,7 +9,7 @@ const InvoiceList = () => {
   const { data, isLoading, isError, error } = useInvoices(page, size);
 
   return (
-    <div className="flex flex-col p-8 w-full h-full">
+    <div className="flex flex-col p-8 w-full h-full max-w-[800px]">
       { !isLoading && !isError && 
         <>
           <div className="flex-1 overflow-auto p-4 rounded-xl">

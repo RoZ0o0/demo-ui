@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
-import type { PaginatedInvoicesResponse } from "../types/invoice"
-import { getInvoices } from "../services/invoiceService"
+import { getInvoices } from "../services";
+import type { PaginatedInvoicesResponse } from "../../../types/invoice";
 
 export const useInvoices = (page: number = 0, size: number = 5) => {
     return useQuery<PaginatedInvoicesResponse, Error>({

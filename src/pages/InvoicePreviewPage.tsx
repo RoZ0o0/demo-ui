@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useInvoiceByPublicToken } from "../hooks/useInvoiceByPublicToken";
 import { Box, CircularProgress, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { useInvoiceByPublicToken } from "../hooks/useInvoiceByPublicToken";
 
 const InvoicePreviewPage = () => {
     const { publicToken } = useParams<{ publicToken: string }>();
