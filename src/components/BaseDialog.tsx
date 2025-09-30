@@ -9,7 +9,7 @@ interface BaseDialogProps {
     actions?: ReactNode;
 }
 
-const BaseDialog = ({ isOpen, onClose, title, children, actions }: BaseDialogProps) => {
+const BaseDialog = ({ isOpen, onClose, title, children }: BaseDialogProps) => {
     return (
         <Dialog 
             open={isOpen} 
@@ -24,7 +24,6 @@ const BaseDialog = ({ isOpen, onClose, title, children, actions }: BaseDialogPro
                 <Button onClick={onClose} autoFocus variant="contained">
                     Close
                 </Button>
-                {actions}
             </DialogActions>
         </Dialog>
     )

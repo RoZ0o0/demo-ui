@@ -10,7 +10,8 @@ interface ClientAutocompleteProps {
 }
 
 const ClientAutocomplete = ({ value, onChange, style}: ClientAutocompleteProps) => {
-    const { data: clients = [], isLoading, isError, error } = useClients();
+    const { data, isLoading, isError, error } = useClients();
+    const clients = data?.content ?? [];
 
     return (
         <>
@@ -21,7 +22,16 @@ const ClientAutocomplete = ({ value, onChange, style}: ClientAutocompleteProps) 
                     sx={{ 
                         width: 300,
                         ...style,
-                     }}
+                    }}
+                    slotProps={{
+                        paper: {
+                            sx: {
+                                '& .MuiAutocomplete-listbox': {
+                                    maxHeight: 200,
+                                },
+                            }
+                        }
+                    }}
                     value={value}
                     onChange={(_, newValue) => onChange(newValue ?? undefined)}
                     getOptionLabel={(option) => (`${option.name} ${option.nip}`)}

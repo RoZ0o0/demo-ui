@@ -12,6 +12,15 @@ const Navbar = () => {
       >
         Invoices
       </NavLink>
+      <NavLink
+        to="/client"
+        style={({ isActive }) => ({
+          marginRight: 10,
+          textDecoration: isActive ? 'underline' : 'none',
+        })}
+      >
+        Client
+      </NavLink>
     </nav>
   );
 };
