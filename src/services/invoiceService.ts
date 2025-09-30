@@ -1,4 +1,4 @@
-import type { InvoiceRequest, PaginatedInvoicesResponse } from "../types/invoice";
+import type { InvoiceRequest, InvoiceResponse, PaginatedInvoicesResponse } from "../types/invoice";
 import api from "./api";
 
 export const getInvoices = async (page: number = 0, size: number = 5): Promise<PaginatedInvoicesResponse> => {
@@ -9,4 +9,9 @@ export const getInvoices = async (page: number = 0, size: number = 5): Promise<P
 export const createInvoice = async (invoice: InvoiceRequest): Promise<number> => {
     const response = await api.post<number>("/invoice", invoice);
     return response.data;
+}
+
+export const getInvoiceByPublicToken = async (publicToken: string): Promise<InvoiceResponse> => {
+    const { data } = await api.get<InvoiceResponse>(`/invoice/${publicToken}/preview`);
+    return data;
 }
