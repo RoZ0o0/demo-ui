@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
+import { Dialog, DialogContent, DialogTitle } from "@mui/material"
 import type { ReactNode } from "react";
 
 interface BaseDialogProps {
@@ -20,11 +20,6 @@ const BaseDialog = ({ isOpen, onClose, title, children }: BaseDialogProps) => {
             <DialogContent>
                 {children}
             </DialogContent>
-            <DialogActions>
-                <Button onClick={onClose} autoFocus variant="contained">
-                    Close
-                </Button>
-            </DialogActions>
         </Dialog>
     )
 }
