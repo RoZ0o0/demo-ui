@@ -3,6 +3,8 @@ import BaseDialog from "../../components/BaseDialog";
 import { Button, TextField } from "@mui/material";
 import { clientRequestSchema } from "../../schemas/clientRequestSchema";
 import { useCreateClient } from "../../hooks/useCreateClient";
+import { useCheckClientNipExists } from "../../hooks/useCheckClientNipExists";
+import type { ClientRequest } from "../../types/client";
 
 interface ClientFormDialogProps {
   isOpen: boolean;
@@ -10,7 +12,7 @@ interface ClientFormDialogProps {
 }
 
 const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
-    const [client, setClient] = useState({
+    const [client, setClient] = useState<ClientRequest>({
         name: "",
         nip: "",
         email: "",
@@ -23,6 +25,14 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
         >({});
 
     const { mutate: createClient } = useCreateClient();
+    const { data: clientNipExists } = useCheckClientNipExists(client.nip);
+    
+    const nipError =
+        clientNipExists === undefined
+            ? typeof clientFormErrors.client === "object" && clientFormErrors.nip
+            : clientNipExists.exists
+            ? "NIP already exists"
+            : undefined;
 
     const handleOnClose = () => {
         onClose();
@@ -74,8 +84,12 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
                         label="NIP"
                         value={client.nip}
                         onChange={handleChange("nip")}
-                        error={!!clientFormErrors.nip}
-                        helperText={clientFormErrors.nip}
+                        error={
+                            !!nipError
+                        }
+                        helperText={
+                            nipError
+                        }
                     />
                     <TextField
                         label="Email (Not required)"
@@ -98,8 +112,8 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
                         error={!!clientFormErrors.phone}
                         helperText={clientFormErrors.phone}
                     />
-                    <Button type="submit" variant="contained">
-                        Test
+                    <Button type="submit" variant="contained" disabled={clientNipExists === undefined || clientNipExists.exists === true}>
+                        Create Client
                     </Button>
                 </form>
             </BaseDialog>
