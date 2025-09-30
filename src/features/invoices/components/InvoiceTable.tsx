@@ -1,7 +1,12 @@
 import type { InvoiceResponse } from "../../../types/invoice";
 import InvoiceRow from "./InvoiceRow";
 
-const InvoiceTable = ({ invoices } : { invoices : InvoiceResponse[] }) => {
+type InvoiceTableProps = {
+    invoices: InvoiceResponse[],
+    onDelete: (id: number) => void;
+}
+
+const InvoiceTable = ({ invoices, onDelete }: InvoiceTableProps) => {
     return (
         <table className="w-full h-full">
             <thead>
@@ -14,7 +19,7 @@ const InvoiceTable = ({ invoices } : { invoices : InvoiceResponse[] }) => {
             </thead>
             <tbody className="text-center">
                 {invoices.map((inv) => (
-                    <InvoiceRow key={inv.id} invoice={inv} />
+                    <InvoiceRow key={inv.id} invoice={inv} onDelete={onDelete} />
                 ))}
             </tbody>
         </table>

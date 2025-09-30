@@ -1,7 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import type { InvoiceResponse } from "../../../types/invoice";
+import { Button } from "@mui/material";
 
-const InvoiceRow = ({ invoice }: { invoice: InvoiceResponse }) => {
+type InvoiceRowProps = {
+    invoice: InvoiceResponse,
+    onDelete: (id: number) => void;
+}
+
+const InvoiceRow = ({ invoice, onDelete }: InvoiceRowProps) => {
     const navigate = useNavigate();
 
     return (
@@ -10,8 +16,8 @@ const InvoiceRow = ({ invoice }: { invoice: InvoiceResponse }) => {
             <td>{invoice.client.name}</td>
             <td>{invoice.totalGross?.toFixed(2)}</td>
             <td>
-                <button onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>Preview</button>
-                <button></button>
+                <Button onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>Preview</Button>
+                <Button onClick={() => onDelete(invoice.id)}>Delete</Button>
             </td>
         </tr>
     )
