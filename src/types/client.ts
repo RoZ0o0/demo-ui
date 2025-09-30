@@ -5,6 +5,7 @@ export interface ClientRequest {
   email?: string;
   phone?: string;
 }
+
 export interface ClientResponse extends ClientRequest {
   id: number;
   createdAt: string;

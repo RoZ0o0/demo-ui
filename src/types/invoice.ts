@@ -11,6 +11,7 @@ export interface InvoiceRequest {
 
 export interface InvoiceResponse {
   id: number;
+  publicToken: string;
   invoiceNumber: string;
   issueDate: string;
   dueDate: string;
