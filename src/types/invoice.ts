@@ -22,7 +22,7 @@ export interface InvoiceResponse {
   createdAt: string;
 }
 
-export interface PaginatedInvoices {
+export interface PaginatedInvoicesResponse {
     content: InvoiceResponse[];
     totalElements: number;
     totalPages: number;

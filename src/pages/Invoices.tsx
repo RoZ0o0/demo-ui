@@ -2,7 +2,7 @@ import { useState } from "react";
 import { InvoiceCreateDialog, InvoiceList } from "../features/invoices";
 import { IconButton, Tooltip } from "@mui/material";
 
-const Home = () => {
+const Invoices = () => {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
 
     const handleOpenCreate = () => {
@@ -10,7 +10,7 @@ const Home = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center p-4 bg-gray-100 w-full rounded-3xl">
+        <>
             <div className="relative w-full flex justify-center items-center pb-4">
                 <h2 className="text-center text-2xl">Invoice List</h2>
                 <div className="absolute right-0">
@@ -34,8 +34,8 @@ const Home = () => {
                 isOpen={isCreateOpen}
                 onClose={() => setIsCreateOpen(false)}
             />
-        </div>
+        </>
     )
 }
 
-export default Home;
+export default Invoices;
