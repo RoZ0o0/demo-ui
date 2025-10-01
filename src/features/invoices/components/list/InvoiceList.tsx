@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { CircularProgress, Pagination } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import { useDeleteClient, useInvoices } from '../../hooks';
 import InvoiceTable from './InvoiceTable';
 import { InvoiceDeleteDialog } from '../delete';
+import SearchInput from '../../../../components/SearchInput';
+import ListPagination from '../../../../components/ListPagination';
 
 const InvoiceList = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedInvoiceId, setSelectedInvoiceId] = useState<number | null>(null);
-  const [page, setPage] = useState(0);
-  const size = 5;
 
-  const { data, isLoading, isError, error } = useInvoices(page, size);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [invoiceSearch, setInvoiceSearch] = useState('');
+
+  const { data, isLoading, isError, error } = useInvoices(invoiceSearch, page, size);
   const { mutate: deleteClient } = useDeleteClient();
 
   const openDeleteDialog = (invoiceId: number) => {
@@ -30,20 +34,32 @@ const InvoiceList = () => {
     closeDeleteDialog();
   };
 
+  const handlePageSizeChange = (newSize: number) => {
+    setSize(newSize);
+    setPage(0);
+  };
+
   return (
     <>
       <div className="flex flex-col p-8 w-full h-full max-w-[800px]">
-        {!isLoading && !isError && (
+        {!isLoading && !isError && data && (
           <>
+            <SearchInput
+              value={invoiceSearch}
+              onChange={setInvoiceSearch}
+              placeholder="Search invoice..."
+            />
             <div className="flex-1 overflow-auto p-4 rounded-xl">
               <InvoiceTable invoices={data?.content ?? []} onDelete={openDeleteDialog} />
             </div>
 
             <div className="flex justify-center mt-auto">
-              <Pagination
-                count={data?.totalPages ?? 0}
-                page={page + 1}
-                onChange={(_, value) => setPage(value - 1)}
+              <ListPagination
+                page={page}
+                totalPages={data.totalPages}
+                pageSize={size}
+                onPageChange={setPage}
+                onPageSizeChange={handlePageSizeChange}
               />
             </div>
           </>

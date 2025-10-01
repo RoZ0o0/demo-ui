@@ -2,16 +2,13 @@ import api from '../../../services/api';
 import type { ClientRequest, PaginatedClientsResponse } from '../../../types/client';
 
 export const getClients = async (
+  search: string,
   page: number = 0,
   size?: number,
 ): Promise<PaginatedClientsResponse> => {
-  const params: Record<string, string> = { page: page.toString() };
-
-  if (size !== undefined) {
-    params.size = size.toString();
-  }
-
-  const { data } = await api.get<PaginatedClientsResponse>(`/client`, { params });
+  const { data } = await api.get<PaginatedClientsResponse>(
+    `/client?search=${search}&page=${page}&size=${size}`,
+  );
   return data;
 };
 

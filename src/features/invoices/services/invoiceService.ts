@@ -6,10 +6,13 @@ import type {
 } from '../../../types/invoice';
 
 export const getInvoices = async (
+  search: string,
   page: number = 0,
   size: number = 5,
 ): Promise<PaginatedInvoicesResponse> => {
-  const { data } = await api.get<PaginatedInvoicesResponse>(`/invoice?page=${page}&size=${size}`);
+  const { data } = await api.get<PaginatedInvoicesResponse>(
+    `/invoice?search=${search}&page=${page}&size=${size}`,
+  );
   return data;
 };
 
