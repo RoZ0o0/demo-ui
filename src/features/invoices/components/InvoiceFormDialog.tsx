@@ -1,36 +1,74 @@
 import { Button, Switch, TextField, Typography} from "@mui/material";
 import Stack from '@mui/material/Stack';
-import { useReducer, useState, type FormEvent } from "react";
+import { useEffect, useReducer, useState, type FormEvent } from "react";
 import { initialInvoiceClient, initialInvoiceState, invoiceReducer } from "../reducers";
-import { useCreateInvoice } from "../hooks";
+import { useCreateInvoice, useUpdateInvoice } from "../hooks";
 import { useCheckClientNipExists } from "../../../hooks/useCheckClientNipExists";
 import { invoiceRequestSchema } from "../../../schemas/invoiceRequestSchema";
 import BaseDialog from "../../../components/BaseDialog";
 import InvoiceItemAddDialog from "./InvoiceItemAddDialog";
 import InvoiceClientAutocomplete from "./InvoiceClientAutocomplete";
+import type { InvoiceResponse } from "../../../types/invoice";
+import { v4 as uuidv4 } from 'uuid';
+import { getNipError } from "../../../utils/nipValidation";
 
-interface InvoiceCreateDialogProps {
+interface InvoiceFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  invoiceToEdit?: InvoiceResponse;
 }
 
-const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
+const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialogProps) => {
     const [state, dispatch] = useReducer(invoiceReducer, initialInvoiceState);
     const [isCreatingNewClient, setIsCreatingNewClient] = useState(false);
     const [invoiceFormErrors, setInvoiceFormErrors] = useState<
         Partial<Record<string, string | Partial<Record<string, string>>>>
     >({});
 
-    const { mutate: createInvoice } = useCreateInvoice();
+    useEffect(() => {
+        if (invoiceToEdit) {
+            dispatch({
+                type: "SET_CLIENT",
+                payload: {
+                    client: {
+                    name: invoiceToEdit.client?.name ?? "",
+                    nip: invoiceToEdit.client?.nip ?? "",
+                    address: invoiceToEdit.client?.address ?? "",
+                    email: invoiceToEdit.client?.email ?? "",
+                    phone: invoiceToEdit.client?.phone ?? "",
+                    },
+                },
+            });
+            dispatch({
+                type: "UPDATE_INVOICE_FIELD",
+                payload: {
+                    invoiceNumber: invoiceToEdit.invoiceNumber ?? "",
+                    issueDate: invoiceToEdit.issueDate ?? "",
+                    dueDate: invoiceToEdit.dueDate ?? "",
+                },
+            });
+            dispatch({
+            type: "SET_ITEMS",
+            payload: {
+                items: (invoiceToEdit.items ?? []).map(item => ({
+                ...item,
+                __key: uuidv4(), 
+                })),
+            },
+            });
+        }
+    }, [invoiceToEdit, isOpen])
 
+    const { mutate: createInvoice } = useCreateInvoice();
+    const { mutate: updateInvoice } = useUpdateInvoice();
     const { data: clientNipExists } = useCheckClientNipExists(state.data.client.nip, isCreatingNewClient);
 
-    const nipError =
-        clientNipExists === undefined
-            ? typeof invoiceFormErrors.client === "object" && invoiceFormErrors.client.nip
-            : clientNipExists.exists
-            ? "NIP already exists"
-            : undefined;
+    const nipError = getNipError({
+        clientNip: state.data.client.nip,
+        clientNipExists,
+        formErrors: invoiceFormErrors,
+        editNip: invoiceToEdit?.client.nip,
+    });
 
     const toggleCreatingClient = (checked: boolean) => {
         setIsCreatingNewClient(checked);
@@ -41,6 +79,7 @@ const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
         dispatch({ type: "SET_CLIENT", payload: { client: initialInvoiceClient } });
         dispatch({ type: "CLEAR_ITEMS" });
         dispatch({ type: "UPDATE_INVOICE_FIELD", payload: { invoiceNumber: "", issueDate: "", dueDate: "" } });
+        setIsCreatingNewClient(false);
         onClose();
     }
 
@@ -64,15 +103,27 @@ const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
         const result = invoiceRequestSchema.safeParse(invoiceJson);
 
         if (result.success) {
-            createInvoice(invoiceJson, {
-                onSuccess: () => {
-                    alert("Created");
-                    handleOnClose();
-                },
-                onError: (err) => {
-                    alert(err.message);
-                }
-            })
+            if (invoiceToEdit) {
+                updateInvoice({ id: invoiceToEdit.id, data: invoiceJson }, {
+                    onSuccess: () => {
+                        alert("Invoice Updated");
+                        handleOnClose();
+                    },
+                    onError: (err: Error) => {
+                        alert(err.message);
+                    }
+                })
+            } else {
+                createInvoice(invoiceJson, {
+                    onSuccess: () => {
+                        alert("Created");
+                        handleOnClose();
+                    },
+                    onError: (err) => {
+                        alert(err.message);
+                    }
+                })
+            }
         } else {
             const nestedErrors: Partial<Record<string, string>> = {};
             const fieldErrors: Partial<Record<string, string | typeof nestedErrors>> = {};
@@ -248,7 +299,12 @@ const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
                             />
                         </>
                     )}
-                    <Button type="submit" variant="contained" disabled={isCreatingNewClient && (clientNipExists === undefined || clientNipExists.exists === true)}>
+                    <Button 
+                        type="submit" 
+                        variant="contained" 
+                        disabled={isCreatingNewClient && (clientNipExists === undefined || clientNipExists.exists === true)
+                            
+                        }>
                         Save Invoice
                     </Button>
                 </form>
@@ -263,4 +319,4 @@ const InvoiceCreateDialog = ({ isOpen, onClose }: InvoiceCreateDialogProps) => {
     )
 }
 
-export default InvoiceCreateDialog;
+export default InvoiceFormDialog;

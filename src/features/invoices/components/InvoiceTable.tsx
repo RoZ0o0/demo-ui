@@ -1,7 +1,7 @@
 import type { InvoiceResponse } from "../../../types/invoice";
 import InvoiceRow from "./InvoiceRow";
 
-type InvoiceTableProps = {
+interface InvoiceTableProps {
     invoices: InvoiceResponse[],
     onDelete: (id: number) => void;
 }

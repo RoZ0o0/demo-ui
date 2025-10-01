@@ -20,3 +20,8 @@ export const getInvoiceByPublicToken = async (publicToken: string): Promise<Invo
     const { data } = await api.get<InvoiceResponse>(`/invoice/${publicToken}/preview`);
     return data;
 }
+
+export const updateInvoice = async (invoiceId: number, invoice: InvoiceRequest): Promise<number> => {
+    const response = await api.put<number>(`/invoice/${invoiceId}`, invoice);
+    return response.data;
+}

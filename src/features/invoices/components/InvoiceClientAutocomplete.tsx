@@ -1,7 +1,7 @@
 import { Autocomplete, CircularProgress, TextField, type SxProps } from "@mui/material"
 import type { Theme } from "@emotion/react";
 import type { ClientRequest } from "../../../types/client";
-import { useClients } from "../../clients/hooks/useClients";
+import { useClients } from "../../clients/hooks";
 
 interface ClientAutocompleteProps {
     value?: ClientRequest;

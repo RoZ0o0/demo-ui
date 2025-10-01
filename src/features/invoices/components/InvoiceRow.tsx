@@ -1,14 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import type { InvoiceResponse } from "../../../types/invoice";
 import { Button } from "@mui/material";
+import { useInvoiceForm } from "../hooks/useInvoiceForm";
 
-type InvoiceRowProps = {
+interface InvoiceRowProps {
     invoice: InvoiceResponse,
     onDelete: (id: number) => void;
 }
 
 const InvoiceRow = ({ invoice, onDelete }: InvoiceRowProps) => {
     const navigate = useNavigate();
+    const { openEditForm } = useInvoiceForm();
 
     return (
         <tr>
@@ -18,6 +20,7 @@ const InvoiceRow = ({ invoice, onDelete }: InvoiceRowProps) => {
             <td>
                 <Button onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>Preview</Button>
                 <Button onClick={() => onDelete(invoice.id)}>Delete</Button>
+                <Button onClick={() => openEditForm(invoice)}>Edit</Button>
             </td>
         </tr>
     )

@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
-import { InvoiceCreateDialog, InvoiceList } from "../features/invoices/components";
+import { InvoiceFormDialog, InvoiceList } from "../features/invoices/components";
+import { InvoiceFormProvider } from "../features/invoices/contexts/InvoiceFormContext";
+import { useInvoiceForm } from "../features/invoices/hooks/useInvoiceForm";
 
-const Invoices = () => {
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
-
-    const handleOpenCreate = () => {
-        setIsCreateOpen(true);
-    }
+const InvoicesPageContent = () => {
+    const { isOpen, openCreateForm, invoiceToEdit, closeForm } = useInvoiceForm();
 
     return (
         <>
@@ -16,7 +13,7 @@ const Invoices = () => {
                 <div className="absolute right-0">
                     <Tooltip title="Add invoice">
                         <IconButton
-                            onClick={handleOpenCreate}
+                            onClick={openCreateForm}
                             size="small"
                             className="w-8 h-8 p-0 rounded-full flex items-center justify-center !bg-green-400"
                         >
@@ -30,12 +27,19 @@ const Invoices = () => {
                 <InvoiceList />
             </div>
 
-            <InvoiceCreateDialog
-                isOpen={isCreateOpen}
-                onClose={() => setIsCreateOpen(false)}
+            <InvoiceFormDialog
+                isOpen={isOpen}
+                onClose={closeForm}
+                invoiceToEdit={invoiceToEdit}
             />
         </>
     )
 }
+
+const Invoices = () => (
+    <InvoiceFormProvider>
+        <InvoicesPageContent />
+    </InvoiceFormProvider>
+)
 
 export default Invoices;

@@ -25,6 +25,7 @@ type InvoiceAction =
     | { type: "OPEN_ADD_ITEM" }
     | { type: "CLOSE_ADD_ITEM" }
     | { type: "SAVE_ITEM"; payload: { item: InvoiceItemRequest, key?: string } }
+    | { type: "SET_ITEMS"; payload: { items: InvoiceItemWithKey[] } }
     | { type: "EDIT_ITEM"; payload: { key: string } }
     | { type: "REMOVE_ITEM"; payload: { key: string } }
     | { type: "CLEAR_ITEMS" }
@@ -99,6 +100,14 @@ export const invoiceReducer = (state: InvoiceState, action: InvoiceAction) => {
                     items: [...state.data.items, { ...action.payload.item, __key: uuidv4() }],
                 },
             };
+        case "SET_ITEMS":
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    items: action.payload.items,
+                }
+            }
         case "EDIT_ITEM":
             return {
                 ...state,
