@@ -1,11 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import type { ClientRequest, ClientResponse } from '../../../types/client';
-import { useCheckClientNipExists } from '../../../hooks/useCheckClientNipExists';
-import { clientRequestSchema } from '../../../schemas/clientRequestSchema';
-import BaseDialog from '../../../components/BaseDialog';
 import { Button, TextField } from '@mui/material';
-import { useCreateClient, useUpdateClient } from '../hooks';
-import { getNipError } from '../../../utils/nipValidation';
+import type { ClientRequest, ClientResponse } from '../../../../types/client';
+import { useCreateClient, useUpdateClient } from '../../hooks';
+import { useCheckClientNipExists } from '../../../../hooks/useCheckClientNipExists';
+import { getNipError } from '../../../../utils/nipValidation';
+import { clientRequestSchema } from '../../../../schemas/clientRequestSchema';
+import BaseDialog from '../../../../components/BaseDialog';
 
 interface ClientFormDialogProps {
   isOpen: boolean;

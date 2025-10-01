@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
-import type { ClientResponse } from '../../../types/client';
-import { useClientForm } from '../hooks/useClientForm';
+import type { ClientResponse } from '../../../../types/client';
+import { useClientForm } from '../../hooks/useClientForm';
 
 interface ClientRowProps {
   client: ClientResponse;

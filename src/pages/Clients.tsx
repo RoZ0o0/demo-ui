@@ -1,7 +1,8 @@
 import { IconButton, Tooltip } from '@mui/material';
-import { ClientFormDialog, ClientList } from '../features/clients/components';
 import { useClientForm } from '../features/clients/hooks/useClientForm';
 import { ClientFormProvider } from '../features/clients/contexts/ClientFormContext';
+import { ClientList } from '../features/clients/components/list';
+import { ClientFormDialog } from '../features/clients/components/form';
 
 const ClientsPageContent = () => {
   const { isOpen, openCreateForm, clientToEdit, closeForm } = useClientForm();

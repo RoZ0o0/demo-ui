@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CircularProgress, Pagination } from '@mui/material';
+import { useClients } from '../../hooks';
 import ClientTable from './ClientTable';
-import { useClients } from '../hooks';
 
 const ClientList = () => {
   const [page, setPage] = useState(0);
