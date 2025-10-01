@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import { ClientFormDialog, ClientList } from "../features/clients/components";
+import { useClientForm } from "../features/clients/hooks/useClientForm";
+import { ClientFormProvider } from "../features/clients/contexts/ClientFormContext";
 
-const Clients = () => {
-        const [isClientFormOpen, setIsClientFormOpen] = useState(false);
-    
-        const handleOpenCreate = () => {
-            setIsClientFormOpen(true);
-        }
+const ClientsPageContent = () => {
+    const { isOpen, openCreateForm, clientToEdit,closeForm } = useClientForm();
 
     return (
         <>
@@ -16,7 +13,7 @@ const Clients = () => {
                 <div className="absolute right-0">
                     <Tooltip title="Add client">
                         <IconButton
-                            onClick={handleOpenCreate}
+                            onClick={openCreateForm}
                             size="small"
                             className="w-8 h-8 p-0 rounded-full flex items-center justify-center !bg-green-400"
                         >
@@ -31,11 +28,18 @@ const Clients = () => {
             </div>
 
             <ClientFormDialog
-                isOpen={isClientFormOpen}
-                onClose={() => setIsClientFormOpen(false)}
+                isOpen={isOpen}
+                onClose={closeForm}
+                clientToEdit={clientToEdit}
             />
         </>
     );
 }
+
+const Clients = () => (
+    <ClientFormProvider>
+        <ClientsPageContent />
+    </ClientFormProvider>
+);
 
 export default Clients;

@@ -1,18 +1,20 @@
-import {useState, type FormEvent } from "react";
-import type { ClientRequest } from "../../../types/client";
-import { useCreateClient } from "../hooks/useCreateClient";
+import {useEffect, useState, type FormEvent } from "react";
+import type { ClientRequest, ClientResponse } from "../../../types/client";
 import { useCheckClientNipExists } from "../../../hooks/useCheckClientNipExists";
 import { clientRequestSchema } from "../../../schemas/clientRequestSchema";
 import BaseDialog from "../../../components/BaseDialog";
 import { Button, TextField } from "@mui/material";
+import { useCreateClient, useUpdateClient } from "../hooks";
 
 interface ClientFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  clientToEdit?: ClientResponse;
 }
 
-const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
-    const [client, setClient] = useState<ClientRequest>({
+const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogProps) => {
+    const [client, setClient] = useState<ClientRequest>(
+        clientToEdit || {
         name: "",
         nip: "",
         email: "",
@@ -20,21 +22,41 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
         phone: "",
     });
 
+    useEffect(() => {
+        if (clientToEdit) {
+            setClient({
+                name: clientToEdit.name ?? "",
+                nip: clientToEdit.nip ?? "",
+                email: clientToEdit.email ?? "",
+                address: clientToEdit.address ?? "",
+                phone: clientToEdit.phone ?? ""
+            });
+        }
+    }, [clientToEdit, isOpen])
+
     const [clientFormErrors, setClientFormErrors] = useState<
             Partial<Record<string, string>>
         >({});
 
     const { mutate: createClient } = useCreateClient();
+    const { mutate: updateClient } = useUpdateClient();
     const { data: clientNipExists } = useCheckClientNipExists(client.nip);
     
-    const nipError =
-        clientNipExists === undefined
-            ? typeof clientFormErrors.client === "object" && clientFormErrors.nip
-            : clientNipExists.exists
-            ? "NIP already exists"
-            : undefined;
+const nipError =
+    !client.nip
+        ? undefined
+        : clientNipExists === undefined
+        ? typeof clientFormErrors.client === "object" && clientFormErrors.nip
+        : clientNipExists.exists
+        ? clientToEdit?.nip === client.nip
+            ? undefined
+            : "NIP already exists"
+        : undefined;
 
     const handleOnClose = () => {
+        setClient({ name: "", nip: "", email: "", address: "", phone: "" });
+        
+        setClientFormErrors({});
         onClose();
     }
 
@@ -47,14 +69,29 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
         const result = clientRequestSchema.safeParse(client);
 
         if (result.success) {
-            createClient(client, {
-                onSuccess: () => {
-                    alert("Created");
-                },
-                onError: (err) => {
-                    alert(err.message);
-                }
-            })
+            if (clientToEdit) {
+                updateClient({ id: clientToEdit.id, data: client }, {
+                    onSuccess: () => {
+                        onClose();
+                        alert("Client Updated");
+                    },
+                    onError: (err) => {
+                        onClose();
+                        alert(err.message);
+                    }
+                })
+            } else {
+                createClient(client, {
+                    onSuccess: () => {
+                        onClose();
+                        alert("Created");
+                    },
+                    onError: (err) => {
+                        onClose();
+                        alert(err.message);
+                    }
+                })
+            }
         } else {
             const fieldErrors: Partial<Record<string, string>> = {};
             result.error.issues.forEach((err) => {
@@ -70,7 +107,7 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
             <BaseDialog
                 isOpen={isOpen} 
                 onClose={handleOnClose}
-                title="Create Client"
+                title={clientToEdit ? "Edit Client" : "Create Client"}
             >
                 <form onSubmit={handleSubmit}>
                     <TextField
@@ -112,8 +149,15 @@ const ClientFormDialog = ({ isOpen, onClose }: ClientFormDialogProps) => {
                         error={!!clientFormErrors.phone}
                         helperText={clientFormErrors.phone}
                     />
-                    <Button type="submit" variant="contained" disabled={clientNipExists === undefined || clientNipExists.exists === true}>
-                        Create Client
+                    <Button
+                        type="submit" 
+                        variant="contained" 
+                        disabled={
+                            clientNipExists === undefined || 
+                            (clientNipExists.exists && clientToEdit?.nip !== client.nip)
+                        }
+                    >
+                        {clientToEdit ? "Update Client" : "Create Client"}
                     </Button>
                 </form>
             </BaseDialog>

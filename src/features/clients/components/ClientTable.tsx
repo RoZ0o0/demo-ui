@@ -1,7 +1,11 @@
 import type { ClientResponse } from "../../../types/client";
 import ClientRow from "./ClientRow";
 
-const ClientTable = ({ clients } : { clients : ClientResponse[] }) => {
+interface ClientTableProps {
+    clients: ClientResponse[];
+}
+
+const ClientTable = ({ clients}: ClientTableProps) => {
     return (
         <table className="w-full h-full">
             <thead>

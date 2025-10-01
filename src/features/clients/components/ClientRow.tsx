@@ -1,6 +1,14 @@
+import { Button } from "@mui/material";
 import type { ClientResponse } from "../../../types/client";
+import { useClientForm } from "../hooks/useClientForm";
 
-const ClientRow = ({ client }: { client: ClientResponse }) => {
+interface ClientRowProps {
+    client: ClientResponse;
+}
+
+const ClientRow = ({ client }: ClientRowProps) => {
+    const { openEditForm } = useClientForm();
+
     return (
         <tr>
             <td>{client.name}</td>
@@ -9,7 +17,7 @@ const ClientRow = ({ client }: { client: ClientResponse }) => {
             <td>{client.address}</td>
             <td>{client.phone}</td>
             <td>
-                <button>View</button>
+                <Button onClick={() => openEditForm(client)} >Edit</Button>
             </td>
         </tr>
     )

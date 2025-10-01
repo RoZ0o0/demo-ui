@@ -21,3 +21,8 @@ export const createClient = async (client: ClientRequest): Promise<number> => {
     const response = await api.post<number>("/client", client);
     return response.data;
 }
+
+export const updateClient = async (clientId: number, client: ClientRequest): Promise<number> => {
+    const response = await api.put<number>(`/client/${clientId}`, client);
+    return response.data;
+}
