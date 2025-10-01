@@ -1,4 +1,3 @@
-export { default as InvoiceRow } from './InvoiceRow';
-export { default as InvoiceTable } from './InvoiceTable';
-export { default as InvoiceList } from './InvoiceList';
-export { default as InvoiceFormDialog } from './InvoiceFormDialog';
+export * as Form from './form';
+export * as List from './list';
+export * as Delete from './delete';

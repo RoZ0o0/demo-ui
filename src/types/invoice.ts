@@ -1,5 +1,5 @@
-import type { ClientRequest, ClientResponse } from "./client";
-import type { InvoiceItemRequest, InvoiceItemResponse } from "./invoiceItem";
+import type { ClientRequest, ClientResponse } from './client';
+import type { InvoiceItemRequest, InvoiceItemResponse } from './invoiceItem';
 
 export interface InvoiceRequest {
   invoiceNumber: string;
@@ -24,9 +24,9 @@ export interface InvoiceResponse {
 }
 
 export interface PaginatedInvoicesResponse {
-    content: InvoiceResponse[];
-    totalElements: number;
-    totalPages: number;
-    number: number;
-    size: number;
+  content: InvoiceResponse[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
 }

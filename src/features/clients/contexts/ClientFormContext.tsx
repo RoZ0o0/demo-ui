@@ -1,5 +1,5 @@
-import { createContext, useState, type ReactNode } from "react";
-import type { ClientResponse } from "../../../types/client";
+import { createContext, useState, type ReactNode } from 'react';
+import type { ClientResponse } from '../../../types/client';
 
 interface ClientFormContextType {
   isOpen: boolean;

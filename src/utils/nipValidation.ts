@@ -11,17 +11,17 @@ export function getNipError(params: {
   if (!clientNip) return undefined;
 
   if (clientNipExists === undefined) {
-    if (formErrors.client && typeof formErrors.client === "object") {
+    if (formErrors.client && typeof formErrors.client === 'object') {
       return formErrors.client.nip ?? undefined;
     }
-    if (formErrors.client && typeof formErrors.client === "string") {
+    if (formErrors.client && typeof formErrors.client === 'string') {
       return formErrors.client;
     }
     return undefined;
   }
 
   if (clientNipExists.exists) {
-    return editNip === clientNip ? undefined : "NIP already exists";
+    return editNip === clientNip ? undefined : 'NIP already exists';
   }
 
   return undefined;

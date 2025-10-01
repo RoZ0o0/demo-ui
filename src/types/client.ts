@@ -12,9 +12,9 @@ export interface ClientResponse extends ClientRequest {
 }
 
 export interface PaginatedClientsResponse {
-    content: ClientResponse[];
-    totalElements: number;
-    totalPages: number;
-    number: number;
-    size: number;
+  content: ClientResponse[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+  size: number;
 }
