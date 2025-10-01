@@ -4,7 +4,7 @@ import { useClientForm } from "../features/clients/hooks/useClientForm";
 import { ClientFormProvider } from "../features/clients/contexts/ClientFormContext";
 
 const ClientsPageContent = () => {
-    const { isOpen, openCreateForm, clientToEdit,closeForm } = useClientForm();
+    const { isOpen, openCreateForm, clientToEdit, closeForm } = useClientForm();
 
     return (
         <>

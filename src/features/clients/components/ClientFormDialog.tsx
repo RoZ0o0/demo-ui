@@ -5,6 +5,7 @@ import { clientRequestSchema } from "../../../schemas/clientRequestSchema";
 import BaseDialog from "../../../components/BaseDialog";
 import { Button, TextField } from "@mui/material";
 import { useCreateClient, useUpdateClient } from "../hooks";
+import { getNipError } from "../../../utils/nipValidation";
 
 interface ClientFormDialogProps {
   isOpen: boolean;
@@ -42,17 +43,13 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
     const { mutate: updateClient } = useUpdateClient();
     const { data: clientNipExists } = useCheckClientNipExists(client.nip);
     
-const nipError =
-    !client.nip
-        ? undefined
-        : clientNipExists === undefined
-        ? typeof clientFormErrors.client === "object" && clientFormErrors.nip
-        : clientNipExists.exists
-        ? clientToEdit?.nip === client.nip
-            ? undefined
-            : "NIP already exists"
-        : undefined;
-
+    const nipError = getNipError({
+        clientNip: client.nip,
+        clientNipExists,
+        formErrors: clientFormErrors,
+        editNip: clientToEdit?.nip,
+    });
+    
     const handleOnClose = () => {
         setClient({ name: "", nip: "", email: "", address: "", phone: "" });
         
@@ -75,7 +72,7 @@ const nipError =
                         onClose();
                         alert("Client Updated");
                     },
-                    onError: (err) => {
+                    onError: (err: Error) => {
                         onClose();
                         alert(err.message);
                     }
