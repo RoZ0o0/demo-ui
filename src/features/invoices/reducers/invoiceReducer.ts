@@ -89,7 +89,7 @@ export const invoiceReducer = (state: InvoiceState, action: InvoiceAction) => {
             ...state.data,
             items: state.data.items.map((i) =>
               i.__key === action.payload.key
-                ? { ...action.payload.item, __key: action.payload.key }
+                ? { ...i, ...action.payload.item, __key: action.payload.key }
                 : i,
             ),
           },
