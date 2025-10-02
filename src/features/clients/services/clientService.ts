@@ -1,10 +1,12 @@
 import api from '../../../services/api';
 import type { ClientRequest, PaginatedClientsResponse } from '../../../types/client';
 
+const maxSize = 99999;
+
 export const getClients = async (
   search: string,
   page: number = 0,
-  size?: number,
+  size: number = maxSize,
 ): Promise<PaginatedClientsResponse> => {
   const { data } = await api.get<PaginatedClientsResponse>(
     `/client?search=${search}&page=${page}&size=${size}`,

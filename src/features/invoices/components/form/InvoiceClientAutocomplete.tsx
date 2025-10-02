@@ -10,7 +10,7 @@ interface ClientAutocompleteProps {
 }
 
 const InvoiceClientAutocomplete = ({ value, onChange, style }: ClientAutocompleteProps) => {
-  const { data, isLoading, isError, error } = useClients();
+  const { data, isLoading, isError, error } = useClients('', 0, 5);
   const clients = data?.content ?? [];
 
   return (
@@ -20,7 +20,8 @@ const InvoiceClientAutocomplete = ({ value, onChange, style }: ClientAutocomplet
           disablePortal
           options={clients}
           sx={{
-            width: 300,
+            width: '100%',
+            padding: 1,
             ...style,
           }}
           slotProps={{

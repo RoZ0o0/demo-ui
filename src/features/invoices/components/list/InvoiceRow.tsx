@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useInvoiceForm } from '../../hooks/useInvoiceForm';
 import type { InvoiceResponse } from '../../../../types/invoice';
+import { PreviewIcon } from '../../../../components/icons/PreviewIcon';
+import { EditIcon } from '../../../../components/icons/EditIcon';
+import { DeleteIcon } from '../../../../components/icons/DeleteIcon';
 
 interface InvoiceRowProps {
   invoice: InvoiceResponse;
@@ -14,13 +17,21 @@ const InvoiceRow = ({ invoice, onDelete }: InvoiceRowProps) => {
 
   return (
     <tr>
-      <td>{invoice.invoiceNumber}</td>
-      <td>{invoice.client.name}</td>
-      <td>{invoice.totalGross?.toFixed(2)}</td>
-      <td>
-        <Button onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>Preview</Button>
-        <Button onClick={() => onDelete(invoice.id)}>Delete</Button>
-        <Button onClick={() => openEditForm(invoice)}>Edit</Button>
+      <td className="h-16">{invoice.invoiceNumber}</td>
+      <td className="h-16">{invoice.client.name}</td>
+      <td className="h-16">{invoice.totalGross?.toFixed(2)}</td>
+      <td className="h-16">
+        <div className="flex flex-row gap-x-1 w-1/7 justify-center mx-auto">
+          <IconButton onClick={() => navigate(`/invoice/${invoice.publicToken}/preview`)}>
+            <PreviewIcon />
+          </IconButton>
+          <IconButton onClick={() => openEditForm(invoice)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={() => onDelete(invoice.id)}>
+            <DeleteIcon color="red" />
+          </IconButton>
+        </div>
       </td>
     </tr>
   );

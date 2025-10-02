@@ -7,15 +7,15 @@ interface ClientTableProps {
 
 const ClientTable = ({ clients }: ClientTableProps) => {
   return (
-    <table className="w-full h-full">
+    <table className="w-full">
       <thead>
         <tr>
-          <th className="w-1/3">Name</th>
-          <th className="w-1/3">NIP</th>
-          <th className="w-1/3">Email</th>
-          <th className="w-1/3">Address</th>
-          <th className="w-1/3">Phone</th>
-          <th>Actions</th>
+          <th className="w-1/6">Name</th>
+          <th className="w-1/6">NIP</th>
+          <th className="w-1/6">Email</th>
+          <th className="w-1/6">Address</th>
+          <th className="w-1/6">Phone</th>
+          <th className="w-1/6">Actions</th>
         </tr>
       </thead>
       <tbody className="text-center">

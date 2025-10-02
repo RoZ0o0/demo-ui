@@ -6,7 +6,11 @@ const Navbar = () => {
       <NavLink
         to="/"
         style={({ isActive }) => ({
+          fontWeight: 'bold',
           marginRight: 10,
+          backgroundColor: isActive ? 'rgb(200, 200, 200)' : 'transparent',
+          padding: 6,
+          borderRadius: 4,
           textDecoration: isActive ? 'underline' : 'none',
         })}
       >
@@ -15,6 +19,10 @@ const Navbar = () => {
       <NavLink
         to="/client"
         style={({ isActive }) => ({
+          fontWeight: 'bold',
+          backgroundColor: isActive ? 'rgb(200, 200, 200)' : 'transparent',
+          padding: 6,
+          borderRadius: 4,
           marginRight: 10,
           textDecoration: isActive ? 'underline' : 'none',
         })}

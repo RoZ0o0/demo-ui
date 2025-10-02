@@ -12,8 +12,8 @@ interface BaseDialogProps {
 const BaseDialog = ({ isOpen, onClose, title, children }: BaseDialogProps) => {
   return (
     <Dialog open={isOpen} onClose={onClose} disableRestoreFocus={true}>
-      {title && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent>{children}</DialogContent>
+      {title && <DialogTitle sx={{ alignSelf: 'center' }}>{title}</DialogTitle>}
+      <DialogContent sx={{ width: 600 }}>{children}</DialogContent>
     </Dialog>
   );
 };

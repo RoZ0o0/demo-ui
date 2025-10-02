@@ -1,4 +1,4 @@
-import { TextField, Switch, Typography } from '@mui/material';
+import { TextField, Switch, Typography, Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import InvoiceClientAutocomplete from './InvoiceClientAutocomplete';
 import type { ClientRequest } from '../../../../types/client';
@@ -46,53 +46,61 @@ const InvoiceFormClientSection = ({
         </>
       ) : (
         <>
-          <TextField
-            label="Name"
-            value={client.name}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { name: e.target.value } })
-            }
-            error={typeof errors === 'object' && !!errors.name}
-            helperText={typeof errors === 'object' && errors.name}
-          />
-          <TextField
-            label="NIP"
-            value={client.nip}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { nip: e.target.value } })
-            }
-            error={!!nipError}
-            helperText={nipError}
-          />
-          <TextField
-            label="Address (Not required)"
-            value={client.address}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { address: e.target.value } })
-            }
-            error={typeof errors === 'object' && !!errors.address}
-            helperText={typeof errors === 'object' && errors.address}
-          />
-          <TextField
-            type="email"
-            label="Email (Not required)"
-            value={client.email}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { email: e.target.value } })
-            }
-            error={typeof errors === 'object' && !!errors.email}
-            helperText={typeof errors === 'object' && errors.email}
-          />
-          <TextField
-            type="tel"
-            label="Phone (Not required)"
-            value={client.phone}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { phone: e.target.value } })
-            }
-            error={typeof errors === 'object' && !!errors.phone}
-            helperText={typeof errors === 'object' && errors.phone}
-          />
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 2,
+            }}
+          >
+            <TextField
+              label="Name"
+              value={client.name}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { name: e.target.value } })
+              }
+              error={typeof errors === 'object' && !!errors.name}
+              helperText={typeof errors === 'object' && errors.name}
+            />
+            <TextField
+              label="NIP"
+              value={client.nip}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { nip: e.target.value } })
+              }
+              error={!!nipError}
+              helperText={nipError}
+            />
+            <TextField
+              label="Address (Not required)"
+              value={client.address}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { address: e.target.value } })
+              }
+              error={typeof errors === 'object' && !!errors.address}
+              helperText={typeof errors === 'object' && errors.address}
+            />
+            <TextField
+              type="email"
+              label="Email (Not required)"
+              value={client.email}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { email: e.target.value } })
+              }
+              error={typeof errors === 'object' && !!errors.email}
+              helperText={typeof errors === 'object' && errors.email}
+            />
+            <TextField
+              type="tel"
+              label="Phone (Not required)"
+              value={client.phone}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_CLIENT_FIELD', payload: { phone: e.target.value } })
+              }
+              error={typeof errors === 'object' && !!errors.phone}
+              helperText={typeof errors === 'object' && errors.phone}
+            />
+          </Box>
         </>
       )}
     </>

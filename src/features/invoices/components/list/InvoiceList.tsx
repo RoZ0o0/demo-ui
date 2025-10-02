@@ -41,7 +41,7 @@ const InvoiceList = () => {
 
   return (
     <>
-      <div className="flex flex-col p-8 w-full h-full max-w-[800px]">
+      <div className="flex flex-col p-8 w-full h-full">
         {!isLoading && !isError && data && (
           <>
             <SearchInput
@@ -49,7 +49,7 @@ const InvoiceList = () => {
               onChange={setInvoiceSearch}
               placeholder="Search invoice..."
             />
-            <div className="flex-1 overflow-auto p-4 rounded-xl">
+            <div className="flex-1 overflow-auto p-4 rounded-xl bg-gray-100  my-4">
               <InvoiceTable invoices={data?.content ?? []} onDelete={openDeleteDialog} />
             </div>
 

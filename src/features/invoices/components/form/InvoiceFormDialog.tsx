@@ -24,6 +24,7 @@ const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialog
   const [invoiceFormErrors, setInvoiceFormErrors] = useState<
     Partial<Record<string, string | Partial<Record<string, string>>>>
   >({});
+  const [responseError, setResponseError] = useState('');
 
   useEffect(() => {
     if (invoiceToEdit) {
@@ -86,7 +87,12 @@ const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialog
       payload: { invoiceNumber: '', issueDate: '', dueDate: '' },
     });
     setIsCreatingNewClient(false);
+    setResponseError('');
     onClose();
+  };
+
+  const handleResponseError = (err: string) => {
+    setResponseError(err);
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -102,7 +108,6 @@ const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialog
         email: state.data.client.email,
         phone: state.data.client.phone,
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       items: state.data.items.map(({ __key, ...rest }) => rest),
     };
 
@@ -114,22 +119,20 @@ const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialog
           { id: invoiceToEdit.id, data: invoiceJson },
           {
             onSuccess: () => {
-              alert('Invoice Updated');
               handleOnClose();
             },
             onError: (err: Error) => {
-              alert(err.message);
+              handleResponseError(err.message);
             },
           },
         );
       } else {
         createInvoice(invoiceJson, {
           onSuccess: () => {
-            alert('Created');
             handleOnClose();
           },
           onError: (err) => {
-            alert(err.message);
+            handleResponseError(err.message);
           },
         });
       }
@@ -161,70 +164,82 @@ const InvoiceFormDialog = ({ isOpen, onClose, invoiceToEdit }: InvoiceFormDialog
         title={invoiceToEdit ? 'Edit Invoice' : 'Create Invoice'}
       >
         <form onSubmit={handleSubmit}>
-          <TextField
-            label="Invoice Number"
-            value={state.data.invoiceNumber}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_INVOICE_FIELD', payload: { invoiceNumber: e.target.value } })
-            }
-            error={!!invoiceFormErrors.invoiceNumber}
-            helperText={invoiceFormErrors.invoiceNumber as string}
-          />
-          <TextField
-            label="Issue Date"
-            type="date"
-            placeholder=""
-            value={state.data.issueDate}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_INVOICE_FIELD', payload: { issueDate: e.target.value } })
-            }
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-            error={!!invoiceFormErrors.issueDate}
-            helperText={invoiceFormErrors.issueDate as string}
-          />
-          <TextField
-            label="Due Date"
-            type="date"
-            value={state.data.dueDate}
-            onChange={(e) =>
-              dispatch({ type: 'UPDATE_INVOICE_FIELD', payload: { dueDate: e.target.value } })
-            }
-            slotProps={{
-              inputLabel: {
-                shrink: true,
-              },
-            }}
-            error={!!invoiceFormErrors.dueDate}
-            helperText={invoiceFormErrors.dueDate as string}
-          />
-          <InvoiceFormItemsSection
-            items={state.data.items}
-            errors={invoiceFormErrors.items as string | undefined}
-            dispatch={dispatch}
-          />
-          <br />
-          <InvoiceFormClientSection
-            client={state.data.client}
-            isCreatingNewClient={isCreatingNewClient}
-            errors={invoiceFormErrors.client}
-            nipError={nipError}
-            onToggleCreate={toggleCreatingClient}
-            dispatch={dispatch}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={
-              isCreatingNewClient &&
-              (clientNipExists === undefined || clientNipExists.exists === true)
-            }
-          >
-            Save Invoice
-          </Button>
+          <div className="flex flex-col gap-y-2 justify-center m-2">
+            <TextField
+              label="Invoice Number"
+              value={state.data.invoiceNumber}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_INVOICE_FIELD',
+                  payload: { invoiceNumber: e.target.value },
+                })
+              }
+              error={!!invoiceFormErrors.invoiceNumber}
+              helperText={invoiceFormErrors.invoiceNumber as string}
+            />
+            <TextField
+              label="Issue Date"
+              type="date"
+              placeholder=""
+              value={state.data.issueDate}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_INVOICE_FIELD', payload: { issueDate: e.target.value } })
+              }
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
+              error={!!invoiceFormErrors.issueDate}
+              helperText={invoiceFormErrors.issueDate as string}
+            />
+            <TextField
+              label="Due Date"
+              type="date"
+              value={state.data.dueDate}
+              onChange={(e) =>
+                dispatch({ type: 'UPDATE_INVOICE_FIELD', payload: { dueDate: e.target.value } })
+              }
+              slotProps={{
+                inputLabel: {
+                  shrink: true,
+                },
+              }}
+              error={!!invoiceFormErrors.dueDate}
+              helperText={invoiceFormErrors.dueDate as string}
+            />
+            <div className="flex flex-col gap-y-2 my-6">
+              <InvoiceFormItemsSection
+                items={state.data.items}
+                errors={invoiceFormErrors.items as string | undefined}
+                dispatch={dispatch}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-y-2 mb-4">
+              <InvoiceFormClientSection
+                client={state.data.client}
+                isCreatingNewClient={isCreatingNewClient}
+                errors={invoiceFormErrors.client}
+                nipError={nipError}
+                onToggleCreate={toggleCreatingClient}
+                dispatch={dispatch}
+              />
+            </div>
+          </div>
+          <div className="flex flex-row justify-end items-center mb-4 px-4">
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ width: '100%' }}
+              disabled={
+                isCreatingNewClient &&
+                (clientNipExists === undefined || clientNipExists.exists === true)
+              }
+            >
+              Save Invoice
+            </Button>
+          </div>
+          <span className="flex justify-center text-red-700">{responseError}</span>
         </form>
       </BaseDialog>
       <InvoiceItemAddDialog

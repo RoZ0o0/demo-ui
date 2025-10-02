@@ -24,7 +24,7 @@ const InvoicesPageContent = () => {
         </div>
       </div>
 
-      <div className="flex justify-center max-w-[800px] bg-white px-8 rounded-lg shadow-lg w-full h-full">
+      <div className="flex justify-center bg-white px-8 rounded-lg shadow-lg w-full h-full">
         <InvoiceList />
       </div>
 

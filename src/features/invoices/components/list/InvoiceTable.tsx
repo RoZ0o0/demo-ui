@@ -8,13 +8,13 @@ interface InvoiceTableProps {
 
 const InvoiceTable = ({ invoices, onDelete }: InvoiceTableProps) => {
   return (
-    <table className="w-full h-full">
+    <table className="w-full">
       <thead>
         <tr>
-          <th className="w-1/3">Number</th>
-          <th className="w-1/3">Client</th>
-          <th className="w-1/3">Total</th>
-          <th>Actions</th>
+          <th className="w-1/4">Invoice Number</th>
+          <th className="w-1/4">Client</th>
+          <th className="w-1/4">Total</th>
+          <th className="w-1/4">Actions</th>
         </tr>
       </thead>
       <tbody className="text-center">

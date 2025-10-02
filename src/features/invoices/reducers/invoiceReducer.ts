@@ -113,8 +113,8 @@ export const invoiceReducer = (state: InvoiceState, action: InvoiceAction) => {
     case 'EDIT_ITEM':
       return {
         ...state,
-        data: {
-          ...state.data,
+        ui: {
+          ...state.ui,
           editingItem: state.data.items.find((i) => i.__key === action.payload.key),
           isAddOpen: true,
         },

@@ -37,6 +37,7 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
   }, [clientToEdit, isOpen]);
 
   const [clientFormErrors, setClientFormErrors] = useState<Partial<Record<string, string>>>({});
+  const [responseError, setResponseError] = useState('');
 
   const { mutate: createClient } = useCreateClient();
   const { mutate: updateClient } = useUpdateClient();
@@ -60,6 +61,10 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
     setClient({ ...client, [field]: e.target.value });
   };
 
+  const handleResponseError = (err: string) => {
+    setResponseError(err);
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const result = clientRequestSchema.safeParse(client);
@@ -71,11 +76,9 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
           {
             onSuccess: () => {
               onClose();
-              alert('Client Updated');
             },
             onError: (err: Error) => {
-              onClose();
-              alert(err.message);
+              handleResponseError(err.message);
             },
           },
         );
@@ -83,11 +86,10 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
         createClient(client, {
           onSuccess: () => {
             onClose();
-            alert('Created');
           },
           onError: (err) => {
             onClose();
-            alert(err.message);
+            handleResponseError(err.message);
           },
         });
       }
@@ -109,44 +111,47 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
         title={clientToEdit ? 'Edit Client' : 'Create Client'}
       >
         <form onSubmit={handleSubmit}>
-          <TextField
-            label="Name"
-            value={client.name}
-            onChange={handleChange('name')}
-            error={!!clientFormErrors.name}
-            helperText={clientFormErrors.name}
-          />
-          <TextField
-            label="NIP"
-            value={client.nip}
-            onChange={handleChange('nip')}
-            error={!!nipError}
-            helperText={nipError}
-          />
-          <TextField
-            label="Email (Not required)"
-            value={client.email}
-            onChange={handleChange('email')}
-            error={!!clientFormErrors.email}
-            helperText={clientFormErrors.email}
-          />
-          <TextField
-            label="Address (Not required)"
-            value={client.address}
-            onChange={handleChange('address')}
-            error={!!clientFormErrors.address}
-            helperText={clientFormErrors.address}
-          />
-          <TextField
-            label="Phone (Not required)"
-            value={client.phone}
-            onChange={handleChange('phone')}
-            error={!!clientFormErrors.phone}
-            helperText={clientFormErrors.phone}
-          />
+          <div className="flex flex-col gap-y-4 justify-center m-2 mb-4">
+            <TextField
+              label="Name"
+              value={client.name}
+              onChange={handleChange('name')}
+              error={!!clientFormErrors.name}
+              helperText={clientFormErrors.name}
+            />
+            <TextField
+              label="NIP"
+              value={client.nip}
+              onChange={handleChange('nip')}
+              error={!!nipError}
+              helperText={nipError}
+            />
+            <TextField
+              label="Email (Not required)"
+              value={client.email}
+              onChange={handleChange('email')}
+              error={!!clientFormErrors.email}
+              helperText={clientFormErrors.email}
+            />
+            <TextField
+              label="Address (Not required)"
+              value={client.address}
+              onChange={handleChange('address')}
+              error={!!clientFormErrors.address}
+              helperText={clientFormErrors.address}
+            />
+            <TextField
+              label="Phone (Not required)"
+              value={client.phone}
+              onChange={handleChange('phone')}
+              error={!!clientFormErrors.phone}
+              helperText={clientFormErrors.phone}
+            />
+          </div>
           <Button
             type="submit"
             variant="contained"
+            sx={{ width: '100%' }}
             disabled={
               clientNipExists === undefined ||
               (clientNipExists.exists && clientToEdit?.nip !== client.nip)
@@ -154,6 +159,7 @@ const ClientFormDialog = ({ isOpen, onClose, clientToEdit }: ClientFormDialogPro
           >
             {clientToEdit ? 'Update Client' : 'Create Client'}
           </Button>
+          <span className="flex justify-center text-red-700">{responseError}</span>
         </form>
       </BaseDialog>
     </>
